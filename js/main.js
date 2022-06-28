@@ -1,4 +1,32 @@
+var elSelect = document.querySelector(".js-select")
 var elList = document.querySelector(".pokemons__list");
+var elForm = document.querySelector(".form");
+var elList = document.querySelector(".pokemons__list");
+
+
+function renderType(arr, element){
+
+  let renderTypes = [];
+
+  arr.forEach((p) => {
+
+    p.type.forEach(type => {
+      if(!renderTypes.includes(type)){
+        renderTypes.push(type)
+      }
+    })
+  })
+
+  renderTypes.forEach(type => {
+    const newOption = document.createElement("option");
+    newOption.value = type;
+    newOption.textContent = type;
+    element.appendChild(newOption);
+  })
+
+}
+
+
 
 function render(arr){
   elList.innerHTML = "";
@@ -12,6 +40,7 @@ function render(arr){
     var elType =  document.createElement("p");
     var elSublist =  document.createElement("ul");
     var elWeaknesses =  document.createElement("li");
+ 
 
 
     elImg.textContent = pokemon.img;
@@ -43,4 +72,18 @@ function render(arr){
 }
 
 
-render(pokemons)
+elForm.addEventListener("change", evt => {
+
+  evt.preventDefault();
+
+  const elSelectVal = elSelect.value;
+
+  let filterTypes = elSelectVal == "all types" ? pokemons : pokemons.filter(p => p.type.includes(elSelectVal));
+
+  console.log(filterTypes);
+
+  render(filterTypes, elList);
+})
+
+render(pokemons, elList)
+renderType(pokemons, elSelect);
